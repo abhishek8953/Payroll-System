@@ -1,1 +1,118 @@
-m
+import java.util.ArrayList;
+
+abstract class Employee{
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    public String getName(){
+        return this.name;
+    }
+    public int getId(){
+        return this.id;
+    }
+
+    //abstract method;
+    public abstract double calculateSalary();
+
+    
+    @Override
+    public String toString() {
+        return "Employee name {" +this.name+"} Id {"+this.id+"} salary {"+calculateSalary()+"}";
+    }
+}
+
+class FullTimeEmployee extends Employee{
+    private double monthlySalary;
+    
+    
+   
+    public FullTimeEmployee(int id, String name, double monthlySalary) {
+        super(id, name);
+        this.monthlySalary = monthlySalary;
+    }
+
+    @Override
+    public double calculateSalary() {
+        return monthlySalary;
+    }
+   
+}
+
+
+class PartTimeEmployee extends Employee{
+    private int hoursWorked;
+    private double hourlyRate;
+
+    public PartTimeEmployee(int id, String name, int hoursWorked, double hourlyRate) {
+        super(id, name);
+        this.hoursWorked = hoursWorked;
+        this.hourlyRate = hourlyRate;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        //for culcalating the salary of part time empoloyee
+        //8*300;
+        return hoursWorked*hourlyRate;
+    }
+}
+
+class PayrolSytem{
+    private ArrayList<Employee> employeeLIst;
+
+    public PayrolSytem(){
+        employeeLIst=new ArrayList<>();
+    }
+
+    public void addEmployee(Employee emp){
+        employeeLIst.add(emp);
+    }
+    public void removeEmployee(int id){
+        Employee removeEmp=null;
+        
+        for(Employee employee : employeeLIst){
+            if(employee.getId()==id){
+                removeEmp=employee;
+                break;
+            }  
+        }
+        //using object of employee to remove
+        if(removeEmp !=null){
+            employeeLIst.remove(removeEmp);
+        }
+    }
+
+    public void displayEmployee(){
+        for (Employee employee : employeeLIst) {
+            System.out.println(employee);
+        }
+    }
+}
+
+
+
+
+public class Main{
+    public static void main(String[] args) {
+        PayrolSytem payrolSytem =new PayrolSytem();
+
+        FullTimeEmployee emp1 =new FullTimeEmployee(1, "Abhishek",30000);
+        PartTimeEmployee emp2 =new PartTimeEmployee(2, "Mohan", 10,100);
+
+        payrolSytem.addEmployee(emp1);
+        payrolSytem.addEmployee(emp2);
+        System.out.println("Details of employee");
+        payrolSytem.displayEmployee();
+
+        payrolSytem.removeEmployee(1);
+        System.out.println("remaining employee");
+        payrolSytem.displayEmployee();
+        
+        System.out.println(emp2.getName()+" | "+emp2.calculateSalary());
+    }
+}
